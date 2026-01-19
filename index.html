@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday ✨</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at top, #1a1a2e, #0f0c29);
+    color: #fff;
+    overflow-x: hidden;
+}
+
+/* ---------- Sakura ---------- */
+.sakura {
+    position: fixed;
+    top: -10%;
+    width: 20px;
+    height: 20px;
+    background: pink;
+    border-radius: 50% 50% 50% 0;
+    opacity: 0.7;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    to { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* ---------- Hero ---------- */
+.hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    animation: fadeIn 2s ease;
+}
+
+.hero h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 64px;
+    color: #ffb7d5;
+}
+
+.hero h2 {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+.countdown {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+.time-box {
+    background: rgba(255,255,255,0.1);
+    padding: 16px 18px;
+    border-radius: 14px;
+    min-width: 80px;
+    backdrop-filter: blur(8px);
+}
+
+.time-box span {
+    display: block;
+    font-size: 26px;
+    font-weight: 600;
+    color: #ffd1e8;
+}
+
+.time-box small {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.btn {
+    margin-top: 40px;
+    padding: 14px 32px;
+    border-radius: 30px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    background: linear-gradient(45deg, #ff77aa, #ffb7d5);
+    color: #1a1a2e;
+    font-weight: 600;
+    box-shadow: 0 0 20px rgba(255,183,213,0.6);
+    transition: transform 0.3s;
+}
+
+.btn:hover { transform: scale(1.08); }
+
+/* ---------- Sections ---------- */
+.section {
+    padding: 80px 20px;
+    max-width: 1100px;
+    margin: auto;
+    text-align: center;
+}
+
+.section h3 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #ffb7d5;
+}
+
+/* ---------- Gallery ---------- */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.photo {
+    height: 260px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffd1e8;
+    backdrop-filter: blur(6px);
+    transition: transform 0.4s;
+}
+
+.photo:hover { transform: scale(1.05); }
+
+footer {
+    text-align: center;
+    padding: 30px;
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+/* ---------- Animations ---------- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Sakura Petals -->
+<script>
+for (let i = 0; i < 30; i++) {
+    const petal = document.createElement("div");
+    petal.className = "sakura";
+    petal.style.left = Math.random() * 100 + "vw";
+    petal.style.animationDuration = 5 + Math.random() * 5 + "s";
+    petal.style.opacity = Math.random();
+    document.body.appendChild(petal);
+}
+</script>
+
+<!-- HERO -->
+<section class="hero">
+    <h1 id="headline">A Special Day Is Coming ✨</h1>
+    <h2>February 22</h2>
+
+    <!-- Countdown -->
+    <div class="countdown" id="countdown">
+        <div class="time-box"><span id="days">00</span><small>Days</small></div>
+        <div class="time-box"><span id="hours">00</span><small>Hours</small></div>
+        <div class="time-box"><span id="minutes">00</span><small>Minutes</small></div>
+        <div class="time-box"><span id="seconds">00</span><small>Seconds</small></div>
+    </div>
+
+    <button class="btn" onclick="document.getElementById('story').scrollIntoView({behavior:'smooth'})">
+        Enter Her Anime World 🌸
+    </button>
+</section>
+
+<!-- STORY -->
+<section class="section" id="story">
+    <h3>🌸 A New Chapter 🌸</h3>
+    <p>
+        Like an anime heroine, may your story always be full of light, courage,
+        laughter, and beautiful moments.
+    </p>
+</section>
+
+<!-- GALLERY -->
+<section class="section">
+    <h3>📸 Beautiful Memories</h3>
+    <div class="gallery">
+        <div class="photo">Add Photo</div>
+        <div class="photo">Add Photo</div>
+        <div class="photo">Add Photo</div>
+        <div class="photo">Add Photo</div>
+    </div>
+</section>
+
+<footer>
+    Made with 💖 just for you
+</footer>
+
+<!-- Countdown Script -->
+<script>
+const targetDate = new Date(new Date().getFullYear(), 1, 22, 0, 0, 0); // Feb = 1
+
+function updateCountdown() {
+    const now = new Date();
+    let diff = targetDate - now;
+
+    if (diff <= 0) {
+        document.getElementById("headline").innerText = "🎉 Happy Birthday 🎉";
+        document.getElementById("countdown").innerHTML =
+            "<h2 style='color:#ffd1e8;'>Wishing you endless happiness ✨</h2>";
+        return;
+    }
+
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const m = Math.floor((diff / (1000 * 60)) % 60);
+    const s = Math.floor((diff / 1000) % 60);
+
+    days.innerText = d;
+    hours.innerText = h;
+    minutes.innerText = m;
+    seconds.innerText = s;
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
+
+</body>
+</html>
