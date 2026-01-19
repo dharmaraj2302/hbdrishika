@@ -245,78 +245,86 @@ for (let i = 0; i < 30; i++) {
     document.body.appendChild(p);
 }
 
-/* Music System */
+/* ================= MUSIC SYSTEM (FIXED) ================= */
 const music = document.getElementById("music");
 const btn = document.getElementById("musicBtn");
 const volume = document.getElementById("volume");
-let playing = false;
-
-function fade(target) {
-    let v = music.volume;
-    const step = target > v ? 0.02 : -0.02;
-    const i = setInterval(() => {
-        v += step;
-        music.volume = Math.max(0, Math.min(1, v));
-        if ((step > 0 && v >= target) || (step < 0 && v <= target)) clearInterval(i);
-    }, 50);
-}
+let isPlaying = false;
 
 function loadTrack() {
     const now = new Date();
     const midnight = new Date(now.getFullYear(), 1, 22);
-    music.src = now >= midnight ? "anime-music-night.mp3" : "anime-music-day.mp3";
+    music.src = now >= midnight
+        ? "anime-music-night.mp3"
+        : "anime-music-day.mp3";
+    music.load();
 }
-
 loadTrack();
 music.volume = volume.value;
 
-window.addEventListener("click", () => {
-    if (!playing) {
-        music.play();
-        fade(volume.value);
-        playing = true;
-        btn.innerText = "🔇 Music Off";
+function fadeTo(target) {
+    clearInterval(music._fade);
+    music._fade = setInterval(() => {
+        if (Math.abs(music.volume - target) < 0.02) {
+            music.volume = target;
+            clearInterval(music._fade);
+            return;
+        }
+        music.volume += music.volume < target ? 0.02 : -0.02;
+    }, 50);
+}
+
+btn.addEventListener("click", async () => {
+    try {
+        if (!isPlaying) {
+            music.volume = 0;
+            await music.play();
+            fadeTo(volume.value);
+            btn.innerText = "🔇 Music Off";
+            isPlaying = true;
+        } else {
+            fadeTo(0);
+            setTimeout(() => music.pause(), 600);
+            btn.innerText = "🎵 Music On";
+            isPlaying = false;
+        }
+    } catch (e) {
+        console.warn("Playback blocked:", e);
     }
-}, { once: true });
+});
 
-btn.onclick = () => {
-    if (music.paused) {
-        music.play();
-        fade(volume.value);
-        btn.innerText = "🔇 Music Off";
-    } else {
-        fade(0);
-        setTimeout(() => music.pause(), 800);
-        btn.innerText = "🎵 Music On";
-    }
-};
+volume.addEventListener("input", () => {
+    music.volume = volume.value;
+});
 
-volume.oninput = () => music.volume = volume.value;
-
-/* Countdown + Unlock */
-const target = new Date(new Date().getFullYear(), 1, 22, 0, 0, 0);
+/* ================= COUNTDOWN ================= */
+const targetDate = new Date(new Date().getFullYear(), 1, 22, 0, 0, 0);
 setInterval(() => {
-    const diff = target - new Date();
+    const now = new Date();
+    const diff = targetDate - now;
+
     if (diff <= 0) {
         headline.innerText = "🎉 Happy Birthday 🎉";
-        countdown.innerHTML = "<h2>Wishing you endless happiness ✨</h2>";
+        countdown.innerHTML = "<h2 style='color:#ffd1e8;'>Wishing you endless happiness ✨</h2>";
         secret.style.display = "block";
         launchFireworks();
         loadTrack();
         return;
     }
+
     days.innerText = Math.floor(diff / 86400000);
     hours.innerText = Math.floor(diff / 3600000) % 24;
     minutes.innerText = Math.floor(diff / 60000) % 60;
     seconds.innerText = Math.floor(diff / 1000) % 60;
 }, 1000);
 
-/* Fireworks */
+/* ================= FIREWORKS ================= */
 function launchFireworks() {
     const c = document.getElementById("fireworks");
     const ctx = c.getContext("2d");
     c.width = innerWidth;
     c.height = innerHeight;
+
     for (let i = 0; i < 300; i++) {
         ctx.fillStyle = `hsl(${Math.random()*360},100%,70%)`;
         ctx.beginPath();
