@@ -24,39 +24,37 @@ body {
     inset: 0;
     background: radial-gradient(circle, #0f0c29, #000);
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 9999;
     animation: fadeOut 2s ease forwards;
-    animation-delay: 5s;
+    animation-delay: 6s;
 }
 
 #opening h1 {
     font-family: 'Great Vibes', cursive;
     font-size: 64px;
     color: #ffb7d5;
-    animation: glow 2s infinite alternate;
+    animation: glow 1.8s infinite alternate;
 }
 
 @keyframes fadeOut { to { opacity: 0; pointer-events: none; } }
 @keyframes glow {
-    from { text-shadow: 0 0 10px #ff77aa; }
-    to { text-shadow: 0 0 30px #ffb7d5; }
+    from { text-shadow: 0 0 10px #ff77aa; transform: scale(1); }
+    to { text-shadow: 0 0 35px #ffb7d5; transform: scale(1.05); }
 }
 
 /* ---------- Sakura ---------- */
 .sakura {
     position: fixed;
     top: -10%;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     background: pink;
     border-radius: 50% 50% 50% 0;
     opacity: 0.7;
     animation: fall linear infinite;
 }
-
 @keyframes fall {
     to { transform: translateY(110vh) rotate(360deg); }
 }
@@ -66,22 +64,32 @@ header {
     position: fixed;
     top: 0;
     width: 100%;
-    padding: 14px 24px;
+    padding: 14px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.45);
     backdrop-filter: blur(10px);
     z-index: 100;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 header button {
     background: linear-gradient(45deg, #ff77aa, #ffb7d5);
     border: none;
-    padding: 8px 16px;
+    padding: 8px 14px;
     border-radius: 20px;
     font-weight: 600;
     cursor: pointer;
+}
+
+input[type="range"] {
+    width: 80px;
 }
 
 /* ---------- Hero ---------- */
@@ -92,7 +100,6 @@ header button {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 20px;
 }
 
 .hero h1 {
@@ -101,44 +108,24 @@ header button {
     color: #ffb7d5;
 }
 
-.hero h2 {
-    font-size: 22px;
-    font-weight: 300;
-    letter-spacing: 2px;
-}
-
 /* ---------- Countdown ---------- */
 .countdown {
     margin-top: 30px;
     display: flex;
-    gap: 20px;
+    gap: 18px;
 }
 
 .time-box {
     background: rgba(255,255,255,0.1);
-    padding: 16px 18px;
+    padding: 16px;
     border-radius: 14px;
     min-width: 80px;
     backdrop-filter: blur(8px);
 }
 
 .time-box span {
-    display: block;
     font-size: 26px;
-    font-weight: 600;
     color: #ffd1e8;
-}
-
-.btn {
-    margin-top: 40px;
-    padding: 14px 32px;
-    border-radius: 30px;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    background: linear-gradient(45deg, #ff77aa, #ffb7d5);
-    color: #1a1a2e;
-    font-weight: 600;
 }
 
 /* ---------- Sections ---------- */
@@ -168,11 +155,8 @@ header button {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #ffd1e8;
-    backdrop-filter: blur(6px);
     animation: float 4s ease-in-out infinite;
 }
-
 @keyframes float {
     50% { transform: translateY(-10px); }
 }
@@ -181,8 +165,8 @@ header button {
 #secret {
     display: none;
     margin-top: 20px;
-    color: #ffd1e8;
     font-size: 18px;
+    color: #ffd1e8;
 }
 
 /* ---------- Footer ---------- */
@@ -193,7 +177,6 @@ footer {
     opacity: 0.6;
 }
 
-/* ---------- Fireworks ---------- */
 canvas {
     position: fixed;
     inset: 0;
@@ -208,19 +191,18 @@ canvas {
     <h1>✨ A Special Day Is Coming ✨</h1>
 </div>
 
-<audio id="music" loop>
-    <source src="anime-music.mp3" type="audio/mpeg">
-</audio>
+<audio id="music" loop></audio>
 
 <header>
     <div>🌸 Feb 22 🌸</div>
-    <button onclick="toggleMusic()">🎵 Music</button>
+    <div class="controls">
+        <input type="range" min="0" max="1" step="0.01" value="0.6" id="volume">
+        <button id="musicBtn">🎵 Music On</button>
+    </div>
 </header>
 
 <section class="hero">
     <h1 id="headline">✨ A Special Day Is Coming ✨</h1>
-    <h2>February 22</h2>
-
     <div class="countdown" id="countdown">
         <div class="time-box"><span id="days">00</span><small>Days</small></div>
         <div class="time-box"><span id="hours">00</span><small>Hours</small></div>
@@ -240,7 +222,7 @@ canvas {
 </section>
 
 <section class="section">
-    <h3>💌 A Secret Message From Derrick and Sara (Wait till 22)</h3>
+    <h3>💌 A Secret Message (Unlocked on 22)</h3>
     <div id="secret">
         Like an anime heroine, may your world always shine 🌸  
         Today is yours — and so is every smile.
@@ -250,7 +232,7 @@ canvas {
 <canvas id="fireworks"></canvas>
 
 <footer>
-    Made with lots of 💖 just for you Rishika
+    Made with infinite 💖 just for you Rishika
 </footer>
 
 <script>
@@ -263,28 +245,66 @@ for (let i = 0; i < 30; i++) {
     document.body.appendChild(p);
 }
 
-/* Music */
-function toggleMusic() {
-    const m = document.getElementById("music");
-    m.paused ? m.play() : m.pause();
+/* Music System */
+const music = document.getElementById("music");
+const btn = document.getElementById("musicBtn");
+const volume = document.getElementById("volume");
+let playing = false;
+
+function fade(target) {
+    let v = music.volume;
+    const step = target > v ? 0.02 : -0.02;
+    const i = setInterval(() => {
+        v += step;
+        music.volume = Math.max(0, Math.min(1, v));
+        if ((step > 0 && v >= target) || (step < 0 && v <= target)) clearInterval(i);
+    }, 50);
 }
 
-/* Countdown + Unlock */
-const targetDate = new Date(new Date().getFullYear(), 1, 22, 0, 0, 0);
-const secret = document.getElementById("secret");
-
-setInterval(() => {
+function loadTrack() {
     const now = new Date();
-    const diff = targetDate - now;
+    const midnight = new Date(now.getFullYear(), 1, 22);
+    music.src = now >= midnight ? "anime-music-night.mp3" : "anime-music-day.mp3";
+}
 
+loadTrack();
+music.volume = volume.value;
+
+window.addEventListener("click", () => {
+    if (!playing) {
+        music.play();
+        fade(volume.value);
+        playing = true;
+        btn.innerText = "🔇 Music Off";
+    }
+}, { once: true });
+
+btn.onclick = () => {
+    if (music.paused) {
+        music.play();
+        fade(volume.value);
+        btn.innerText = "🔇 Music Off";
+    } else {
+        fade(0);
+        setTimeout(() => music.pause(), 800);
+        btn.innerText = "🎵 Music On";
+    }
+};
+
+volume.oninput = () => music.volume = volume.value;
+
+/* Countdown + Unlock */
+const target = new Date(new Date().getFullYear(), 1, 22, 0, 0, 0);
+setInterval(() => {
+    const diff = target - new Date();
     if (diff <= 0) {
         headline.innerText = "🎉 Happy Birthday 🎉";
-        countdown.innerHTML = "<h2 style='color:#ffd1e8;'>Wishing you endless happiness ✨</h2>";
+        countdown.innerHTML = "<h2>Wishing you endless happiness ✨</h2>";
         secret.style.display = "block";
         launchFireworks();
+        loadTrack();
         return;
     }
-
     days.innerText = Math.floor(diff / 86400000);
     hours.innerText = Math.floor(diff / 3600000) % 24;
     minutes.innerText = Math.floor(diff / 60000) % 60;
@@ -297,8 +317,7 @@ function launchFireworks() {
     const ctx = c.getContext("2d");
     c.width = innerWidth;
     c.height = innerHeight;
-
-    for (let i = 0; i < 250; i++) {
+    for (let i = 0; i < 300; i++) {
         ctx.fillStyle = `hsl(${Math.random()*360},100%,70%)`;
         ctx.beginPath();
         ctx.arc(Math.random()*c.width, Math.random()*c.height, 3, 0, Math.PI*2);
